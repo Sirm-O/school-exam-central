@@ -26,14 +26,6 @@
   --border-radius: 1rem;
   --transition: all 0.3s ease;
   --hover-scale: 1.02;
-  --sidebar-background: 240 70% 98%;
-  --sidebar-foreground: 220 20% 10%;
-  --sidebar-primary: 240 70% 60%;
-  --sidebar-primary-foreground: 220 20% 98%;
-  --sidebar-accent: 240 70% 80%;
-  --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-  --sidebar-border: 240 70% 90%;
-  --sidebar-ring: 240 70% 80%;
 }
 
 [data-theme="dark"] {
@@ -60,14 +52,6 @@
   --border-radius: 1rem;
   --transition: all 0.3s ease;
   --hover-scale: 1.02;
-  --sidebar-background: 240 70% 15%;
-  --sidebar-foreground: 220 20% 98%;
-  --sidebar-primary: 240 70% 70%;
-  --sidebar-primary-foreground: 220 20% 98%;
-  --sidebar-accent: 240 70% 35%;
-  --sidebar-accent-foreground: 210 40% 98%;
-  --sidebar-border: 240 70% 20%;
-  --sidebar-ring: 240 70% 30%;
 }
 
 * {
@@ -87,28 +71,51 @@ button:hover, a:hover {
   transform: scale(var(--hover-scale));
 }
 
-/* Add glass effect to cards */
-.card {
+/* Glass effect for cards */
+[data-theme="light"] .card {
   background: hsl(var(--background) / 0.8);
-  backdrop-filter: var(--backdropBlur);
+  backdrop-filter: backdrop-blur-sm;
   border: 1px solid hsl(var(--border));
 }
 
-/* Add glass effect to sidebar */
-.sidebar {
-  background: hsl(var(--sidebar-background) / 0.8);
-  backdrop-filter: var(--backdropBlur);
-  border-right: 1px solid hsl(var(--sidebar-border));
+[data-theme="dark"] .card {
+  background: hsl(var(--background) / 0.8);
+  backdrop-filter: backdrop-blur-sm;
+  border: 1px solid hsl(var(--border));
 }
 
-/* Add glow effect to buttons */
-.btn-primary {
-  box-shadow: var(--shadow-glow);
+/* Glass effect for sidebar */
+[data-theme="light"] .sidebar {
+  background: hsl(var(--background) / 0.8);
+  backdrop-filter: backdrop-blur-sm;
+  border-right: 1px solid hsl(var(--border));
 }
 
-/* Add gradient to headers */
+[data-theme="dark"] .sidebar {
+  background: hsl(var(--background) / 0.8);
+  backdrop-filter: backdrop-blur-sm;
+  border-right: 1px solid hsl(var(--border));
+}
+
+/* Gradient text for headings */
 h1, h2, h3 {
   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-dark)));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+/* Glow effect for buttons */
+.btn-primary {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Smooth transitions */
+[data-theme="light"] {
+  transition: background 0.3s ease;
+}
+
+[data-theme="dark"] {
+  transition: background 0.3s ease;
 }
