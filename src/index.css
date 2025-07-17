@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
+  --background: 240 70% 98%;
   --background-dark: 240 70% 95%;
   --foreground: 220 20% 10%;
   --primary: 260 70% 70%;
@@ -26,6 +26,14 @@
   --border-radius: 1rem;
   --transition: all 0.3s ease;
   --hover-scale: 1.02;
+  --sidebar-background: 240 70% 98%;
+  --sidebar-foreground: 220 20% 10%;
+  --sidebar-primary: 260 70% 70%;
+  --sidebar-primary-foreground: 220 20% 98%;
+  --sidebar-accent: 240 70% 90%;
+  --sidebar-accent-foreground: 222.2 47.4% 11.2%;
+  --sidebar-border: 240 70% 90%;
+  --sidebar-ring: 240 70% 80%;
 }
 
 [data-theme="dark"] {
@@ -52,6 +60,14 @@
   --border-radius: 1rem;
   --transition: all 0.3s ease;
   --hover-scale: 1.02;
+  --sidebar-background: 240 70% 15%;
+  --sidebar-foreground: 220 20% 98%;
+  --sidebar-primary: 260 70% 80%;
+  --sidebar-primary-foreground: 220 20% 98%;
+  --sidebar-accent: 240 70% 25%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 240 70% 20%;
+  --sidebar-ring: 240 70% 30%;
 }
 
 * {
