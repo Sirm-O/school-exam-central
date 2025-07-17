@@ -48,6 +48,33 @@ export default {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
+				gradient: {
+					primary: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-dark)))',
+					secondary: 'linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-dark)))',
+					accent: 'linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-dark)))'
+				},
+				background: {
+					gradient: 'linear-gradient(135deg, hsl(var(--background)), hsl(var(--background-dark)))',
+					glass: 'rgba(255, 255, 255, 0.1)',
+					glassDark: 'rgba(0, 0, 0, 0.8)'
+				},
+				shadow: {
+					glow: '0 0 20px rgba(139, 92, 246, 0.3)',
+					soft: '0 8px 32px rgba(0, 0, 0, 0.1)'
+				}
+			},
+			backdropBlur: {
+				DEFAULT: 'backdrop-blur-sm',
+				heavy: 'backdrop-blur-lg'
+			},
+			boxShadow: {
+				glow: '0 0 20px rgba(139, 92, 246, 0.3)',
+				soft: '0 8px 32px rgba(0, 0, 0, 0.1)'
+			}
+		}
+	},
+	plugins: [require("tailwindcss-animate")],
+};
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
