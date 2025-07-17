@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Plus, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { StudentForm } from "@/components/StudentForm";
 
 interface Student {
   id: string;
@@ -21,6 +22,7 @@ export default function Students() {
   const { toast } = useToast();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -46,6 +48,11 @@ export default function Students() {
     }
   };
 
+  const handleStudentAdded = () => {
+    fetchStudents();
+    setShowForm(false);
+  };
+
   if (loading) {
     return <div className="text-center">Loading students...</div>;
   }
@@ -58,12 +65,23 @@ export default function Students() {
           <p className="text-muted-foreground">Manage student records and enrollments</p>
         </div>
         {(profile?.role === 'admin') && (
-          <Button>
+          <Button onClick={() => setShowForm(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Add Student
           </Button>
         )}
       </div>
+
+      {showForm && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Add New Student</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <StudentForm onClose={() => setShowForm(false)} onStudentAdded={handleStudentAdded} />
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
