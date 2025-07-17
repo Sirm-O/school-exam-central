@@ -31,6 +31,7 @@ const Index = () => {
     upcomingExams: []
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -38,16 +39,23 @@ const Index = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const [studentsData, examsData, classesData, subjectsData] = await Promise.all([
+      setLoading(true);
+      setError(null);
+      
+      const [studentsRes, examsRes, classesRes, subjectsRes] = await Promise.all([
         supabase.from('students').select('id', { count: 'exact' }),
         supabase.from('exams').select('*').order('created_at', { ascending: false }),
         supabase.from('classes').select('id', { count: 'exact' }),
         supabase.from('subjects').select('id', { count: 'exact' })
       ]);
 
+      if (studentsRes.error || examsRes.error || classesRes.error || subjectsRes.error) {
+        throw new Error('Failed to fetch dashboard data');
+      }
+
       const now = new Date();
-      const exams = examsData.data || [];
-      const upcomingExams = exams.filter(exam => new Date(exam.exam_date) > now);
+      const exams = examsRes.data || [];
+      const upcomingExams = exams.filter(exam => new Date(exam.exam_date || '') > now);
       const recentExams = exams.slice(0, 5);
 
       setStats({
