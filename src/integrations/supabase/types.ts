@@ -16,27 +16,48 @@ export type Database = {
     Tables: {
       classes: {
         Row: {
+          class_teacher_id: string | null
           created_at: string
           description: string | null
           id: string
           name: string
+          principal_id: string | null
           updated_at: string
         }
         Insert: {
+          class_teacher_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
           name: string
+          principal_id?: string | null
           updated_at?: string
         }
         Update: {
+          class_teacher_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
           name?: string
+          principal_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "classes_class_teacher_id_fkey"
+            columns: ["class_teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "classes_principal_id_fkey"
+            columns: ["principal_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       exams: {
         Row: {
@@ -169,6 +190,54 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      streams: {
+        Row: {
+          capacity: number | null
+          class_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          stream_teacher_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          capacity?: number | null
+          class_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          stream_teacher_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          capacity?: number | null
+          class_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          stream_teacher_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "streams_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "streams_stream_teacher_id_fkey"
+            columns: ["stream_teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

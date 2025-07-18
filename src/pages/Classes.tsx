@@ -11,6 +11,7 @@ import { AddClassDialog } from "@/components/classes/AddClassDialog";
 import { ClassActionsMenu } from "@/components/classes/ClassActionsMenu";
 import { EditClassDialog } from "@/components/classes/EditClassDialog";
 import { ClassDetailsDialog } from "@/components/classes/ClassDetailsDialog";
+import { ManageStreamsDialog } from "@/components/classes/ManageStreamsDialog";
 
 interface Class {
   id: string;
@@ -28,6 +29,7 @@ export default function Classes() {
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [manageStreamsDialogOpen, setManageStreamsDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchClasses();
@@ -101,10 +103,8 @@ export default function Classes() {
   };
 
   const handleManageStreams = (classItem: Class) => {
-    toast({
-      title: "Coming Soon",
-      description: "Stream management functionality will be available soon",
-    });
+    setSelectedClass(classItem);
+    setManageStreamsDialogOpen(true);
   };
 
   const handlePrintStreamList = (classItem: Class) => {
@@ -205,6 +205,13 @@ export default function Classes() {
         classItem={selectedClass}
         open={detailsDialogOpen}
         onOpenChange={setDetailsDialogOpen}
+      />
+
+      <ManageStreamsDialog
+        classItem={selectedClass}
+        open={manageStreamsDialogOpen}
+        onOpenChange={setManageStreamsDialogOpen}
+        onStreamsUpdated={fetchClasses}
       />
     </div>
   );
