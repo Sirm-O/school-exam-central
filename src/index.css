@@ -73,26 +73,26 @@ button:hover, a:hover {
 
 /* Glass effect for cards */
 [data-theme="light"] .card {
-  background: hsl(var(--background) / 0.8);
+  background: hsla(var(--background), 0.8);
   backdrop-filter: blur(8px);
   border: 1px solid hsl(var(--border));
 }
 
 [data-theme="dark"] .card {
-  background: hsl(var(--background) / 0.8);
+  background: hsla(var(--background), 0.8);
   backdrop-filter: blur(8px);
   border: 1px solid hsl(var(--border));
 }
 
 /* Glass effect for sidebar */
 [data-theme="light"] .sidebar {
-  background: hsl(var(--background) / 0.8);
+  background: hsla(var(--background), 0.8);
   backdrop-filter: blur(8px);
   border-right: 1px solid hsl(var(--border));
 }
 
 [data-theme="dark"] .sidebar {
-  background: hsl(var(--background) / 0.8);
+  background: hsla(var(--background), 0.8);
   backdrop-filter: blur(8px);
   border-right: 1px solid hsl(var(--border));
 }
