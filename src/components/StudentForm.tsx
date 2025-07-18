@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,7 +19,7 @@ const studentSchema = z.object({
 
 type StudentFormValues = z.infer<typeof studentSchema>;
 
-export function StudentForm({ onClose }: { onClose: () => void }) {
+export function StudentForm({ onClose, onStudentAdded }: { onClose: () => void; onStudentAdded: () => void }) {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [classes, setClasses] = useState<{ id: string; name: string }[]>([]);
@@ -53,18 +53,38 @@ export function StudentForm({ onClose }: { onClose: () => void }) {
   const onSubmit = async (data: StudentFormValues) => {
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('students')
-        .insert([data]);
+      // First, create user profile
+      const { data: userData, error: userError } = await supabase.auth.signUp({
+        email: data.email,
+        password: 'temppassword123', // Temporary password
+        options: {
+          data: {
+            full_name: data.full_name,
+            role: 'student'
+          }
+        }
+      });
 
-      if (error) throw error;
+      if (userError) throw userError;
+
+      // Then create student record
+      const { error: studentError } = await supabase
+        .from('students')
+        .insert([{
+          student_id: data.student_id,
+          user_id: userData.user!.id,
+          class_id: data.class_id,
+          enrollment_date: data.enrollment_date,
+        }]);
+
+      if (studentError) throw studentError;
 
       toast({
         title: "Success",
         description: "Student added successfully",
       });
 
-      onClose();
+      onStudentAdded();
     } catch (error) {
       toast({
         title: "Error",

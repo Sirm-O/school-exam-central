@@ -59,10 +59,10 @@ const Index = () => {
       const recentExams = exams.slice(0, 5);
 
       setStats({
-        totalStudents: studentsData.count || 0,
+        totalStudents: studentsRes.count || 0,
         totalExams: exams.length,
-        totalClasses: classesData.count || 0,
-        totalSubjects: subjectsData.count || 0,
+        totalClasses: classesRes.count || 0,
+        totalSubjects: subjectsRes.count || 0,
         recentExams,
         upcomingExams: upcomingExams.slice(0, 5)
       });
