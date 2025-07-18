@@ -60,7 +60,7 @@
 
 body {
   background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--background-dark)));
-  color: var(--foreground);
+  color: hsl(var(--foreground));
 }
 
 button, a {
@@ -74,26 +74,26 @@ button:hover, a:hover {
 /* Glass effect for cards */
 [data-theme="light"] .card {
   background: hsl(var(--background) / 0.8);
-  backdrop-filter: backdrop-blur-sm;
+  backdrop-filter: blur(8px);
   border: 1px solid hsl(var(--border));
 }
 
 [data-theme="dark"] .card {
   background: hsl(var(--background) / 0.8);
-  backdrop-filter: backdrop-blur-sm;
+  backdrop-filter: blur(8px);
   border: 1px solid hsl(var(--border));
 }
 
 /* Glass effect for sidebar */
 [data-theme="light"] .sidebar {
   background: hsl(var(--background) / 0.8);
-  backdrop-filter: backdrop-blur-sm;
+  backdrop-filter: blur(8px);
   border-right: 1px solid hsl(var(--border));
 }
 
 [data-theme="dark"] .sidebar {
   background: hsl(var(--background) / 0.8);
-  backdrop-filter: backdrop-blur-sm;
+  backdrop-filter: blur(8px);
   border-right: 1px solid hsl(var(--border));
 }
 
@@ -103,7 +103,6 @@ h1, h2, h3 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-fill-color: transparent;
 }
 
 /* Glow effect for buttons */
