@@ -228,7 +228,7 @@ export function AddClassDialog({ onClassAdded }: AddClassDialogProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No principal assigned</SelectItem>
+                        <SelectItem value="none">No principal assigned</SelectItem>
                         {teachers.map((teacher) => (
                           <SelectItem key={teacher.id} value={teacher.id}>
                             {teacher.full_name} ({teacher.email})
@@ -254,7 +254,7 @@ export function AddClassDialog({ onClassAdded }: AddClassDialogProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No class teacher assigned</SelectItem>
+                        <SelectItem value="none">No class teacher assigned</SelectItem>
                         {teachers.map((teacher) => (
                           <SelectItem key={teacher.id} value={teacher.id}>
                             {teacher.full_name} ({teacher.email})
@@ -359,7 +359,7 @@ export function AddClassDialog({ onClassAdded }: AddClassDialogProps) {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="">No teacher assigned</SelectItem>
+                            <SelectItem value="none">No teacher assigned</SelectItem>
                             {teachers.map((teacher) => (
                               <SelectItem key={teacher.id} value={teacher.id}>
                                 {teacher.full_name} ({teacher.email})
