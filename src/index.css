@@ -4,53 +4,55 @@
 
 @layer base {
   :root {
-    /* Modern Professional Color Palette */
-    --background: 0 0% 100%;
-    --foreground: 222 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 84% 4.9%;
+    /* Cosmic Dark Color Palette */
+    --background: 225 39% 5%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 213 31% 91%;
     
-    /* Primary - Modern Blue Gradient */
-    --primary: 221 83% 53%;
-    --primary-foreground: 210 40% 98%;
-    --primary-light: 213 93% 67%;
-    --primary-dark: 229 84% 39%;
+    /* Primary - Deep Space Blue */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 84% 4.9%;
+    --primary-light: 217 91% 75%;
+    --primary-dark: 217 91% 45%;
     
-    /* Secondary - Elegant Purple */
-    --secondary: 270 95% 75%;
-    --secondary-foreground: 222 84% 4.9%;
-    --secondary-light: 270 100% 85%;
-    --secondary-dark: 270 85% 60%;
+    /* Secondary - Cosmic Purple */
+    --secondary: 263 85% 70%;
+    --secondary-foreground: 213 31% 91%;
+    --secondary-light: 263 85% 85%;
+    --secondary-dark: 263 85% 55%;
     
-    /* Accent - Vibrant Cyan */
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
-    --accent-light: 199 89% 65%;
-    --accent-dark: 199 89% 35%;
+    /* Accent - Stellar Pink */
+    --accent: 326 78% 68%;
+    --accent-foreground: 213 31% 91%;
+    --accent-light: 326 78% 83%;
+    --accent-dark: 326 78% 53%;
     
-    /* Neutral Grays */
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 46%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    /* Cosmic Neutrals */
+    --muted: 215 27% 17%;
+    --muted-foreground: 217 10% 64%;
+    --border: 215 27% 17%;
+    --input: 215 27% 17%;
+    --ring: 217 91% 60%;
     
     /* Status Colors */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --success: 142 71% 45%;
-    --success-foreground: 210 40% 98%;
-    --warning: 45 93% 47%;
-    --warning-foreground: 222 84% 4.9%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 213 31% 91%;
+    --success: 142 69% 58%;
+    --success-foreground: 213 31% 91%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 213 31% 91%;
     
-    /* Gradients */
+    /* Cosmic Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%);
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--secondary-light)) 100%);
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-light)) 100%);
-    --gradient-ambient: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--secondary) / 0.1) 50%, hsl(var(--accent) / 0.1) 100%);
-    --gradient-glass: linear-gradient(135deg, hsl(var(--background) / 0.8) 0%, hsl(var(--background) / 0.4) 100%);
+    --gradient-cosmic: linear-gradient(135deg, hsl(217 91% 60% / 0.4) 0%, hsl(263 85% 70% / 0.3) 50%, hsl(326 78% 68% / 0.2) 100%);
+    --gradient-nebula: radial-gradient(ellipse at center, hsl(217 91% 60% / 0.3) 0%, hsl(263 85% 70% / 0.2) 40%, transparent 70%);
+    --gradient-stars: linear-gradient(45deg, transparent 30%, hsl(213 31% 91% / 0.1) 50%, transparent 70%);
+    --gradient-glass: linear-gradient(135deg, hsl(var(--background) / 0.9) 0%, hsl(var(--background) / 0.6) 100%);
     
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(var(--primary) / 0.05);
@@ -103,8 +105,14 @@
   
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background: var(--gradient-ambient);
+    background: 
+      var(--gradient-stars),
+      var(--gradient-nebula),
+      var(--gradient-cosmic),
+      hsl(var(--background));
+    background-attachment: fixed;
     min-height: 100vh;
+    overflow-x: hidden;
   }
   
   /* Modern scrollbar */
@@ -135,7 +143,7 @@
     @apply border border-white/20;
   }
   
-  /* Gradient backgrounds */
+  /* Cosmic backgrounds */
   .bg-gradient-primary {
     background: var(--gradient-primary);
   }
@@ -148,8 +156,16 @@
     background: var(--gradient-accent);
   }
   
-  .bg-gradient-ambient {
-    background: var(--gradient-ambient);
+  .bg-gradient-cosmic {
+    background: var(--gradient-cosmic);
+  }
+  
+  .bg-gradient-nebula {
+    background: var(--gradient-nebula);
+  }
+  
+  .bg-stars {
+    background: var(--gradient-stars);
   }
   
   /* Modern shadows */

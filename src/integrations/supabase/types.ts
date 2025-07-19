@@ -116,6 +116,36 @@ export type Database = {
           },
         ]
       }
+      parent_info: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          name: string
+          occupation: string | null
+          phone_number: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          occupation?: string | null
+          phone_number: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          occupation?: string | null
+          phone_number?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -248,7 +278,10 @@ export type Database = {
           created_at: string
           enrollment_date: string
           id: string
+          parent_id: string | null
+          stream_id: string | null
           student_id: string
+          student_name: string | null
           updated_at: string
           user_id: string
         }
@@ -257,7 +290,10 @@ export type Database = {
           created_at?: string
           enrollment_date?: string
           id?: string
+          parent_id?: string | null
+          stream_id?: string | null
           student_id: string
+          student_name?: string | null
           updated_at?: string
           user_id: string
         }
@@ -266,7 +302,10 @@ export type Database = {
           created_at?: string
           enrollment_date?: string
           id?: string
+          parent_id?: string | null
+          stream_id?: string | null
           student_id?: string
+          student_name?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -276,6 +315,13 @@ export type Database = {
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "parent_info"
             referencedColumns: ["id"]
           },
         ]
