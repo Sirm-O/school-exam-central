@@ -45,9 +45,9 @@ export default function Students() {
         .from('students')
         .select(`
           *,
-          classes!inner(name),
-          streams(name),
-          parent_info(name, phone_number, address, occupation)
+          classes:class_id(name),
+          streams:stream_id(name),
+          parent_info:parent_id(name, phone_number, address, occupation)
         `)
         .order('created_at', { ascending: false });
 
