@@ -41,7 +41,8 @@ export default function Classes() {
         .from('classes')
         .select(`
           *,
-          students(count)
+          students(count),
+          streams(name)
         `)
         .order('name');
 
@@ -49,7 +50,8 @@ export default function Classes() {
       
       const classesWithCount = data?.map(cls => ({
         ...cls,
-        student_count: cls.students?.[0]?.count || 0
+        student_count: cls.students?.[0]?.count || 0,
+        streams: cls.streams || []
       })) || [];
       
       setClasses(classesWithCount);

@@ -17,6 +17,7 @@ interface Class {
   description: string;
   created_at: string;
   student_count?: number;
+  streams?: { name: string }[];
 }
 
 interface ClassDetailsDialogProps {
@@ -78,10 +79,15 @@ export function ClassDetailsDialog({
           <Separator />
           
           <div>
-            <h4 className="text-sm font-semibold mb-2">Quick Actions</h4>
+            <h4 className="text-sm font-semibold mb-2">Streams</h4>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">No Streams Yet</Badge>
-              <Badge variant="outline">No Exams Yet</Badge>
+              {classItem.streams && classItem.streams.length > 0 ? (
+                classItem.streams.map((stream, index) => (
+                  <Badge key={index} variant="secondary">{stream.name}</Badge>
+                ))
+              ) : (
+                <Badge variant="outline">No Streams Yet</Badge>
+              )}
             </div>
           </div>
           
