@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Users } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Plus, Users, Search, MoreVertical, Eye, TrendingUp, BookOpen, PlusCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudentForm } from "@/components/StudentForm";
 
@@ -32,8 +34,10 @@ export default function Students() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [students, setStudents] = useState<Student[]>([]);
+  const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchStudents();
@@ -45,15 +49,17 @@ export default function Students() {
         .from('students')
         .select(`
           *,
-          classes!students_class_id_fkey(name),
-          streams!students_stream_id_fkey(name),
-          parent_info!students_parent_id_fkey(name, phone_number, address, occupation)
+          classes(name),
+          streams(name),
+          parent_info(name, phone_number, address, occupation)
         `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       setStudents((data as any[]) || []);
+      setFilteredStudents((data as any[]) || []);
     } catch (error: any) {
+      console.error('Failed to fetch students:', error);
       toast({
         title: "Error",
         description: "Failed to fetch students",
@@ -67,6 +73,48 @@ export default function Students() {
   const handleStudentAdded = () => {
     fetchStudents();
     setShowForm(false);
+  };
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    if (!term.trim()) {
+      setFilteredStudents(students);
+      return;
+    }
+    
+    const filtered = students.filter(student => 
+      student.student_id.toLowerCase().includes(term.toLowerCase()) ||
+      (student.student_name && student.student_name.toLowerCase().includes(term.toLowerCase()))
+    );
+    setFilteredStudents(filtered);
+  };
+
+  const handleViewDetails = (student: Student) => {
+    toast({
+      title: "Student Details",
+      description: `Viewing details for ${student.student_name || student.student_id}`,
+    });
+  };
+
+  const handleViewPerformance = (student: Student) => {
+    toast({
+      title: "Student Performance",
+      description: `Viewing performance for ${student.student_name || student.student_id}`,
+    });
+  };
+
+  const handleAddMarks = (student: Student) => {
+    toast({
+      title: "Add Marks",
+      description: `Adding marks for ${student.student_name || student.student_id}`,
+    });
+  };
+
+  const handleAssignSubjects = (student: Student) => {
+    toast({
+      title: "Assign Subjects",
+      description: `Assigning subjects for ${student.student_name || student.student_id}`,
+    });
   };
 
   if (loading) {
@@ -101,16 +149,29 @@ export default function Students() {
 
       <Card className="glass border-primary/20 shadow-ambient">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary">
-            <Users className="h-5 w-5" />
-            All Students
-          </CardTitle>
-          <CardDescription>
-            Total: {students.length} students registered
-          </CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <Users className="h-5 w-5" />
+                All Students
+              </CardTitle>
+              <CardDescription>
+                Total: {filteredStudents.length} students {searchTerm && `(filtered from ${students.length})`}
+              </CardDescription>
+            </div>
+            <div className="relative w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search by student ID or name..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-10 glass border-primary/20"
+              />
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
-          {students.length > 0 ? (
+          {filteredStudents.length > 0 ? (
             <Table>
               <TableHeader>
                 <TableRow className="border-primary/20">
@@ -122,10 +183,11 @@ export default function Students() {
                   <TableHead className="text-primary">Parent Phone</TableHead>
                   <TableHead className="text-primary">Enrollment Date</TableHead>
                   <TableHead className="text-primary">Status</TableHead>
+                  <TableHead className="text-primary">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {students.map((student) => (
+                {filteredStudents.map((student) => (
                   <TableRow key={student.id} className="border-primary/10 hover:bg-primary/5">
                     <TableCell className="font-medium text-primary-light">
                       {student.student_id}
@@ -153,6 +215,33 @@ export default function Students() {
                         Active
                       </Badge>
                     </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="glass border-primary/20">
+                          <DropdownMenuItem onClick={() => handleViewDetails(student)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewPerformance(student)}>
+                            <TrendingUp className="mr-2 h-4 w-4" />
+                            Performance
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleAddMarks(student)}>
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Add Marks
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleAssignSubjects(student)}>
+                            <BookOpen className="mr-2 h-4 w-4" />
+                            Assign Subjects
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -160,8 +249,12 @@ export default function Students() {
           ) : (
             <div className="text-center py-12">
               <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground text-lg">No students found</p>
-              <p className="text-muted-foreground/60">Add your first student to get started</p>
+              <p className="text-muted-foreground text-lg">
+                {searchTerm ? "No students found matching your search" : "No students found"}
+              </p>
+              <p className="text-muted-foreground/60">
+                {searchTerm ? "Try adjusting your search terms" : "Add your first student to get started"}
+              </p>
             </div>
           )}
         </CardContent>
