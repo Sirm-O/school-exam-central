@@ -10,6 +10,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Plus, Users, Search, MoreVertical, Eye, TrendingUp, BookOpen, PlusCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudentForm } from "@/components/StudentForm";
+import { StudentDetailsDialog } from "@/components/students/StudentDetailsDialog";
+import { StudentPerformanceDialog } from "@/components/students/StudentPerformanceDialog";
+import { AddMarksDialog } from "@/components/students/AddMarksDialog";
+import { AssignSubjectsDialog } from "@/components/students/AssignSubjectsDialog";
 
 interface Student {
   id: string;
@@ -38,6 +42,13 @@ export default function Students() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // Dialog states
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showPerformanceDialog, setShowPerformanceDialog] = useState(false);
+  const [showAddMarksDialog, setShowAddMarksDialog] = useState(false);
+  const [showAssignSubjectsDialog, setShowAssignSubjectsDialog] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -108,31 +119,35 @@ export default function Students() {
   };
 
   const handleViewDetails = (student: Student) => {
-    toast({
-      title: "Student Details",
-      description: `Viewing details for ${student.student_name || student.student_id}`,
-    });
+    setSelectedStudent(student);
+    setShowDetailsDialog(true);
   };
 
   const handleViewPerformance = (student: Student) => {
-    toast({
-      title: "Student Performance",
-      description: `Viewing performance for ${student.student_name || student.student_id}`,
-    });
+    setSelectedStudent(student);
+    setShowPerformanceDialog(true);
   };
 
   const handleAddMarks = (student: Student) => {
-    toast({
-      title: "Add Marks",
-      description: `Adding marks for ${student.student_name || student.student_id}`,
-    });
+    setSelectedStudent(student);
+    setShowAddMarksDialog(true);
   };
 
   const handleAssignSubjects = (student: Student) => {
-    toast({
-      title: "Assign Subjects",
-      description: `Assigning subjects for ${student.student_name || student.student_id}`,
-    });
+    setSelectedStudent(student);
+    setShowAssignSubjectsDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setSelectedStudent(null);
+    setShowDetailsDialog(false);
+    setShowPerformanceDialog(false);
+    setShowAddMarksDialog(false);
+    setShowAssignSubjectsDialog(false);
+  };
+
+  const handleDataUpdate = () => {
+    fetchStudents();
   };
 
   if (loading) {
@@ -277,6 +292,34 @@ export default function Students() {
           )}
         </CardContent>
       </Card>
+
+      {/* Dialog Components */}
+      <StudentDetailsDialog
+        student={selectedStudent}
+        open={showDetailsDialog}
+        onOpenChange={setShowDetailsDialog}
+        onStudentUpdated={handleDataUpdate}
+      />
+      
+      <StudentPerformanceDialog
+        student={selectedStudent}
+        open={showPerformanceDialog}
+        onOpenChange={setShowPerformanceDialog}
+      />
+      
+      <AddMarksDialog
+        student={selectedStudent}
+        open={showAddMarksDialog}
+        onOpenChange={setShowAddMarksDialog}
+        onMarksAdded={handleDataUpdate}
+      />
+      
+      <AssignSubjectsDialog
+        student={selectedStudent}
+        open={showAssignSubjectsDialog}
+        onOpenChange={setShowAssignSubjectsDialog}
+        onSubjectsAssigned={handleDataUpdate}
+      />
     </div>
   );
 }
