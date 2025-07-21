@@ -45,24 +45,30 @@ export default function Students() {
 
   const fetchStudents = async () => {
     try {
+      console.log('Fetching students...');
       const { data, error } = await supabase
         .from('students')
         .select(`
           *,
-          classes(name),
-          streams(name),
-          parent_info(name, phone_number, address, occupation)
+          classes!students_class_id_fkey(name),
+          streams!students_stream_id_fkey(name),
+          parent_info!students_parent_id_fkey(name, phone_number, address, occupation)
         `)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('Students data fetched:', data);
       setStudents((data as any[]) || []);
       setFilteredStudents((data as any[]) || []);
     } catch (error: any) {
       console.error('Failed to fetch students:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch students",
+        description: error.message || "Failed to fetch students",
         variant: "destructive",
       });
     } finally {
