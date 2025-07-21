@@ -46,33 +46,36 @@ export default function Students() {
   const fetchStudents = async () => {
     try {
       console.log('Fetching students...');
-      const { data, error } = await supabase
+      
+      // First, fetch students data
+      const { data: studentsData, error: studentsError } = await supabase
         .from('students')
-        .select(`
-          id,
-          student_id,
-          student_name,
-          enrollment_date,
-          user_id,
-          class_id,
-          stream_id,
-          parent_id,
-          created_at,
-          updated_at,
-          classes:class_id(name),
-          streams:stream_id(name),
-          parent_info:parent_id(name, phone_number, address, occupation)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+      if (studentsError) {
+        console.error('Students fetch error:', studentsError);
+        throw studentsError;
       }
+
+      // Fetch related data separately
+      const [classesData, streamsData, parentData] = await Promise.all([
+        supabase.from('classes').select('id, name'),
+        supabase.from('streams').select('id, name'),
+        supabase.from('parent_info').select('id, name, phone_number, address, occupation')
+      ]);
+
+      // Combine the data
+      const enrichedStudents = studentsData.map(student => ({
+        ...student,
+        classes: classesData.data?.find(c => c.id === student.class_id) || null,
+        streams: streamsData.data?.find(s => s.id === student.stream_id) || null,
+        parent_info: parentData.data?.find(p => p.id === student.parent_id) || null
+      }));
       
-      console.log('Students data fetched:', data);
-      setStudents((data as any[]) || []);
-      setFilteredStudents((data as any[]) || []);
+      console.log('Students data enriched:', enrichedStudents);
+      setStudents(enrichedStudents);
+      setFilteredStudents(enrichedStudents);
     } catch (error: any) {
       console.error('Failed to fetch students:', error);
       toast({
