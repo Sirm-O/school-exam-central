@@ -49,10 +49,19 @@ export default function Students() {
       const { data, error } = await supabase
         .from('students')
         .select(`
-          *,
-          classes!students_class_id_fkey(name),
-          streams!students_stream_id_fkey(name),
-          parent_info!students_parent_id_fkey(name, phone_number, address, occupation)
+          id,
+          student_id,
+          student_name,
+          enrollment_date,
+          user_id,
+          class_id,
+          stream_id,
+          parent_id,
+          created_at,
+          updated_at,
+          classes:class_id(name),
+          streams:stream_id(name),
+          parent_info:parent_id(name, phone_number, address, occupation)
         `)
         .order('created_at', { ascending: false });
 
